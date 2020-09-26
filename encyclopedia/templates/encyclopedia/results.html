@@ -1,0 +1,11 @@
+{% extends 'encyclopedia/layout.html' %}
+
+{% block body %}
+{% if data is None %}
+<h1 style="color:red;">Error</h1>
+Page cannot be found
+{%else%}
+{{md|safe}}
+
+{%endif%}
+{% endblock %}
