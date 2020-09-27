@@ -7,7 +7,7 @@ from django.urls import reverse
 def index(request):
 		return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()})
-def rand(request,entry):
+def view(request,entry):
 
 	data=util.get_entry(entry)
 	return render(
@@ -15,7 +15,7 @@ def rand(request,entry):
 		"md": markdown2.markdown(str(data))}
 		)
 
-def searchh(request):
+def search(request):
 	if request.method=='POST':
 		
 		data=request.POST.get('q')
@@ -29,9 +29,9 @@ def searchh(request):
 				#matches.append(data)
 				if data.upper() in i.upper():
 					matches.append(i)
-					return render(request, "encyclopedia/index.html", {
-						"entries": matches,
-						'search':True,
-						'value':data})
+			return render(request, "encyclopedia/index.html", {
+					"entries": matches,
+					'search':True,
+					'value':data})
 	
 

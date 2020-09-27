@@ -5,11 +5,15 @@
 {% endblock %}
 
 {% block body %}
+   
+    {% if search %}
+    <h2>seaching for {{value}}</h2>
+    {%else%}
     <h1>All Pages</h1>
-
+    {% endif %}
     <ul>
         {% for entry in entries %}
-            <li><a href='{%url "rand" entry %}'>{{ entry }}</a></li>
+            <li><a href='{%url "view" entry %}'>{{ entry }}</a></li>
         {% endfor %}
     </ul>
 
