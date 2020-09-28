@@ -9,29 +9,24 @@ def index(request):
         "entries": util.list_entries()})
 def view(request,entry):
 
+
 	data=util.get_entry(entry)
 	return render(
-		request, "encyclopedia/results.html", {'data':util.get_entry(entry),
-		"md": markdown2.markdown(str(data))}
+		request, "encyclopedia/results.html", {'data':data,
+		"md": markdown2.markdown(str(data)), 'ent':entry}
 		)
 
 def search(request):
-	if request.method=='POST':
-		
-		data=request.POST.get('q')
-		if (util.get_entry(data)) is not None:
-			return HttpResponseRedirect(reverse("rand", kwargs={'entry':data}))
+	data=request.POST.get('q')
+	lst=util.list_entries()
+	matches=[]
+	for i in lst:
+		if str(data.upper())==str(i):
+			return HttpResponseRedirect(reverse('view', kwargs={'entry':str(data.upper())}))
 		else:
-			lst=util.list_entries()
-			matches=[]
-			for i in lst:
-			#if data==i:
-				#matches.append(data)
-				if data.upper() in i.upper():
-					matches.append(i)
-			return render(request, "encyclopedia/index.html", {
-					"entries": matches,
-					'search':True,
-					'value':data})
+			if data.upper() in i.upper():
+				matches.append(i.upper())
+	return render(request, 'encyclopedia/index.html', {'entries':matches,'state':True})
+
 	
 
