@@ -1,0 +1,9 @@
+{%extends 'journey/layout.html'%}
+{%block body%}
+<form action='{%url "journey:book"%}' method='POST'>
+<select>
+	{% for i in np%}
+	<option>{{i}}</option>
+</select>
+	</form>
+{%endblock%}
