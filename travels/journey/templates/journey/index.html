@@ -1,9 +1,0 @@
-{% extends 'journey/layout.html'%}
-{% block body %}
-<ul>
-<h1>TRIPS:</h1>
-{%for i in trips%}
-<li><a href='{% url "journey:flight" i.id%}'>Trip:{{i}}</a></li>
-{%endfor%}
-</ul>
-{% endblock %}

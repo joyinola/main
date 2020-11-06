@@ -1,0 +1,30 @@
+{%extends 'auctions/layout.html'%}
+{%block body%}
+
+<div class="container">
+  <div class="row">
+    {%for product in my_listing%}
+    <div class="col-4">
+      <div class="card md-4" style="width: 18rem;">
+        {%if not product.img%}
+        <img width='150px' height="250px" class="card-img-top" src="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482930.jpg" alt=''>
+        {%else%}
+        <img width='100px' height="250px" class="card-img-top" src='{{product.img}}'>
+        {%endif%}
+        
+          <div class="card body">
+            <p class="card-text">{{product.item}}</p>
+            <p class="card-text"> N{{product.price}}</p>
+            <a class="btn btn-primary" href='{%url "item" product.id%}'>View Item</a>
+            {%if product.is_active%}
+            <a class="btn btn-primary" href='{%url "close_bid" product.id%}'>Close Bid</a>
+            {%endif%}
+
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+
+    </div>
+  </div>
+  {%endblock%}

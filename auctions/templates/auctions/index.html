@@ -1,0 +1,145 @@
+
+{% extends "auctions/layout.html" %}
+{%block category%}
+<li>
+  <div class="dropdown ml-5">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+     Categories   
+   </button>
+   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {%for item in group%}
+    <a class="dropdown-item" href="{%url 'category' item.id%}">{{item.category}}</a>
+    {%endfor%}
+    
+  </div>
+</div>
+</li>
+{%endblock category%}
+{% block body %}
+{%if section%}
+{%if section == "No listing present in this category"%}
+<div class="alert alert-primary" role="alert">
+  <h3>{{section}}</h3>
+</div>
+{%else%}
+<div class="container">
+  <div class="row">
+    {%for product in section%}
+    <div class="col-lg-4 col-sm-6">
+      <div class="card md-4 " style="width: 18rem;">
+        {%if not product.img%}
+        <img width='150px' height="250px" class="card-img-top" src="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482930.jpg" alt=''>
+        {%else%}
+        <img width='100px' height="250px" class="card-img-top" src='{{product.img}}'>
+        {%endif%}
+        
+        <div class="card body text-center">
+          <p class="card-text">{{product.item}}</p>
+          <p class="card-text">Price: N{{product.price}}</p>
+          <p class="card-text"> Created on: {{product.timestamp}}</p>
+          <a class="btn btn-primary" href='{%url "item" product.id%}'>Place Bid</a>
+          {%if state%}
+          <a class="btn btn-primary" href='{%url "r_watchlist" product.id%}'>Remove From Watchlist</a>
+          {%else%}
+          <a class="btn btn-primary" href='{%url "watchlist" product.id%}'>Add to Watchlist</a>
+          {%endif%}
+          
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+    </div>
+  </div>
+{%endif%}
+{%endif%}
+<div class="container">
+  <div class="row">
+    {%for product in products%}
+    <div class="col-lg-4 col-sm-6">
+      <div class="card md-4 " style="width: 18rem;">
+        {%if not product.img%}
+        <img width='150px' height="250px" class="card-img-top" src="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482930.jpg" alt=''>
+        {%else%}
+        <img width='100px' height="250px" class="card-img-top" src='{{product.img}}'>
+        {%endif%}
+        
+        <div class="card body text-center">
+          <p class="card-text">{{product.item}}</p>
+          <p class="card-text">Price: N{{product.price}}</p>
+          <p class="card-text"> Created on: {{product.timestamp}}</p>
+          <a class="btn btn-primary" href='{%url "item" product.id%}'>Place Bid</a>
+          {%if state%}
+          <a class="btn btn-primary" href='{%url "r_watchlist" product.id%}'>Remove From Watchlist</a>
+          {%else%}
+          <a class="btn btn-primary" href='{%url "watchlist" product.id%}'>Add to Watchlist</a>
+          {%endif%}
+          
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+    </div>
+  </div>
+
+  {%if state%}
+  <div class="alert alert-primary" role="alert">
+  <h3>{{message}}</h3>
+</div>
+  {%endif%}
+  <div class="container">
+    <div class="row">
+
+      {%for product in watch%}
+      <div class='col-4'>
+        <div class="card md-4" style="width: 18rem;">
+          {%if product.img is None%}
+          <img src="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482930.jpg" alt='' width='250px' height="250px">
+          {%else %} 
+          <img height='150px' width='250px' src="{{product.img}}" alt=''>
+          {%endif%}
+          <div class='card body'>
+            <ul>
+              <li><p class="card-text">{{product.item}}</p></li>
+              <li><p class="card-text">{{product.description}}</p></li>
+              <li><p class="card-text"><strong>Category: </strong>{{product.category}}</p></li>
+              <li><p class="card-text"> Start Bid: N{{product.price}}</p></li>
+              <li class="card-text" >created by {{product.user}} on {{product.timestamp}}</li>
+            </ul>
+            <a class="btn btn-primary md-3" href='{%url "item" product.id%}'>Place Bid</a>
+            <a class="btn btn-primary" href='{%url "r_watchlist" product.id%}'>Remove From Watchlist</a>
+          </div>
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+  </div>
+  
+
+<div class="container">
+  <div class="row">
+    {%for product in category%}
+    <div class="col-4">
+      <div class="card md-4" style="width: 18rem;">
+        {%if not product.img%}
+        <img width='150px' height="250px" class="card-img-top" src="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482930.jpg" alt=''>
+        {%else%}
+        <img width='100px' height="250px" class="card-img-top" src='{{product.img}}'>
+        {%endif%} 
+         <div class="card body">
+            <p class="card-text justify-content-center">{{product.item}}</p>
+            <p class="card-text"> N{{product.price}}</p>
+            <p class="card-text"> Created on: {{product.timestamp}}</p>
+            <a class="btn btn-primary md-3" href='{%url "item" product.id%}'>Place Bid</a>
+            {%if state%}
+            <a class="btn btn-primary" href='{%url "r_watchlist" product.id%}'>Remove From Watchlist</a>
+            {%else%}
+            <a class="btn btn-primary" href='{%url "watchlist" product.id%}'>Add to Watchlist</a>
+            {%endif%}  
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{%extends 'auctions/layout.html'%}
+
+{%block body%}
+{%if message%}
+<div class="alert alert-danger" role="alert">
+	<h3>{{message}}</h3>
+</div>
+{%endif%}
+{%if state%}
+<div class="alert alert-success" role="alert">
+	<i><h3>Your bid has been added successfully and is the current Highest Bid</h3></i>
+</div>
+{%endif%}
+<div class="container">
+	<div class="row">
+		<div class="col-6">
+			<div class="card mb-3 " style="max-width: 540px;">
+				<div class="row no-gutters">
+					<div class="col-md-4">
+						{%if product.img is None%}
+						<img src="https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482930.jpg" alt='' width='250px' height="250px">
+						{%else %} 
+						<img width='200px' height="250px" src="{{product.img}}" alt=''>
+						{%endif%}
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">{{product.item}}</h5>
+							<p class="card-text">
+								<ul>
+									<li><p>{{product.description}}</p></li>
+									<li><p>Category: {{product.category}}</p></li>
+									<li><p> Start Bid: N{{product.price}}</p></li>
+									{%if bid == 'No bid placed yet'%}
+									<li>Highest bid: <strong>{{bid}}</strong></li>
+									{%else%}
+									<li>Highest bid: <strong>{{bid}}</strong> by <strong>{{use}}</strong></li></p>
+									{%endif%}
+									
+								</ul>
+								<p class="card-text"><small class="text-muted">Created by {{product.user}} on {{product.timestamp}}</small></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class='col-6'>
+
+				<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+					<div class="card-header">Starting Price</div>
+					<div class="card-body">
+						{%if bid == 'No bid placed yet'%}
+						<h5 class="card-title">N{{product.price}}</h5>
+						{%else%}
+						<h5 class="card-title"> N{{bid}}</h5>
+						{%endif%}
+						<p class="card-text">
+							{%if active%}
+							<form action='{%url "close_bid" product.id %}' method='post'>
+								{%csrf_token%}
+								<button type="button" class="btn btn-light">Close Bid</button>
+							</form>
+							{%endif%}
+							{%if closed%}
+							<i>bidding has been closed</i>
+							{%if bidder%}
+							<strong>Congratulations! You won the bid!</strong>
+							{%endif%}
+							{%else%}
+
+							<form action='{%url "new_bid" product.id %}' method='POST'>
+								{%csrf_token%}
+								<input type='number' value={{bid}} step='0.01' min=0 name=current_bid>
+								{%if bid == 'No bid placed yet'%}
+								<p>Enter amount higher than Starting Price</p>
+								{%else%}
+								<p>Enter amount higher than {{bid}}</p>
+								{%endif%}
+								
+								<input type="submit" value='Place Bid' class="btn btn-light">
+							</form>
+						{%endif%}
+					</div>
+				</div>
+				<form action='{%url "watchlist" product.id%}' method='post'>
+					{%csrf_token%}
+					<input type="submit" value='Add to Watchlist' class="btn btn-primary">
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+<br>
+{%for i in comment%}
+<strong>{{i.user}}</strong>-{{i.comment}}
+<br>
+{%endfor%}
+<form action="{%url 'item' product.id%}" method='post'>
+	{%csrf_token%}
+	
+	<textarea cols="25" rows='10' name='comment'></textarea>
+	<input type='submit' value='Comment' class="btn btn-primary">
+</form>
+{%endblock%}
